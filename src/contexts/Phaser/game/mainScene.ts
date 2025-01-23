@@ -1,5 +1,6 @@
 import { GameState } from "@/types"
-import { Channel, GAP_WIDTH, CELL_WIDTH } from "./constants"
+import { Channel, GAP_WIDTH, CELL_WIDTH, GRID_COORDINATES } from "./constants"
+import { Cell } from "./cell"
 
 
 export class MainScene extends Phaser.Scene {
@@ -9,38 +10,44 @@ export class MainScene extends Phaser.Scene {
     super({ key: "MainScene" })
   }
 
+  init(data: { updateGameState: (newState: Partial<GameState>) => void }): void {
+    this.updateGameState = data.updateGameState
+  }
+
   preload() {
-    this.load.image("cell", "/cell.png")
+    // Load background image
     this.load.image("background", "/background.png")
+    // Load background cell image
+    this.load.image("cell", "/cell.png")
+
+    // Load all game cell images
     const cellValues = [2,4,8,16,32,64,128,256,512,1024,2048] 
     cellValues.forEach(cellValue => {
         this.load.image(`${cellValue}-cell`, `/${cellValue}-cell.png`)
     })
   }
 
-  init(data: { updateGameState: (newState: Partial<GameState>) => void }): void {
-    this.updateGameState = data.updateGameState
-  }
-
   create(): void {
     // Example of updating game state from within Phaser
     // We just try to render demo.png
+    this.createBackgroundSprites()
+
+    GRID_COORDINATES.filter((_, index) => index < 11).forEach(
+        ([x,y], index) => {
+            const gameCell = new Cell([x,y], `${2**(index % 11 +1)}-cell`, Channel.GAME_CELL)
+            gameCell.render(this)
+    })
+  }
+
+  createBackgroundSprites() {
     this.add
         .sprite(0, 0, "background")
         .setOrigin(0, 0)
         .setDepth(Channel.BACKGROUND)
-    
-    const coordinates: [number,number][] = [[0,0],[0,1],[0,2],[0,3],[1,0],[1,1],[1,2],[1,3],[2,0],[2,1],[2,2],[2,3],[3,0],[3,1],[3,2],[3,3]]
-    coordinates.forEach(
-        ([x,y], index) => {
-        this.add
-            .sprite(
-                GAP_WIDTH + (CELL_WIDTH + GAP_WIDTH)*y,
-                GAP_WIDTH + (CELL_WIDTH + GAP_WIDTH)*x,
-                index < 11 ? `${2**(index % 11 +1)}-cell` : "cell",
-            )
-            .setOrigin(0,0)
-            .setDepth(index < 11 ? Channel.GAME_CELL : Channel.BACKGROUND_CELL)
+
+    GRID_COORDINATES.forEach(([x,y]) => {
+        const cell = new Cell([x,y], "cell", Channel.BACKGROUND_CELL)
+        cell.render(this)
     })
   }
 }
