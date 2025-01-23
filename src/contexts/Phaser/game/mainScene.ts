@@ -1,13 +1,6 @@
 import { GameState } from "@/types"
+import { Channel, GAP_WIDTH, CELL_WIDTH } from "./constants"
 
-enum Channels {
-    BACKGROUND = 0,
-    CELLS = 1,
-    NUMBER_CELLS = 2,
-}
-
-const GAP_WIDTH = 20
-const CELL_WIDTH = 175
 
 export class MainScene extends Phaser.Scene {
   private updateGameState?: (newState: Partial<GameState>) => void
@@ -35,7 +28,7 @@ export class MainScene extends Phaser.Scene {
     this.add
         .sprite(0, 0, "background")
         .setOrigin(0, 0)
-        .setDepth(Channels.BACKGROUND)
+        .setDepth(Channel.BACKGROUND)
     
     const coordinates: [number,number][] = [[0,0],[0,1],[0,2],[0,3],[1,0],[1,1],[1,2],[1,3],[2,0],[2,1],[2,2],[2,3],[3,0],[3,1],[3,2],[3,3]]
     coordinates.forEach(
@@ -47,7 +40,7 @@ export class MainScene extends Phaser.Scene {
                 index < 11 ? `${2**(index % 11 +1)}-cell` : "cell",
             )
             .setOrigin(0,0)
-            .setDepth(Channels.CELLS)
+            .setDepth(index < 11 ? Channel.GAME_CELL : Channel.BACKGROUND_CELL)
     })
   }
 }
