@@ -7,20 +7,18 @@ export class MainScene extends Phaser.Scene {
         super({ key: 'MainScene' });
     }
 
+    preload() {
+        this.load.image("demo", "/demo.png")
+    }
+
     init(data: { updateGameState: (newState: Partial<GameState>) => void }): void {
         this.updateGameState = data.updateGameState;
     }
 
     create(): void {
         // Example of updating game state from within Phaser
-        // const sprite = this.add.sprite(400, 300, 'your-sprite');
-        // sprite.setInteractive();
-        
-        // sprite.on('pointerdown', () => {
-        //     if (this.updateGameState) {
-        //         const currentScore = this.game.registry.get('score') as number;
-        //         this.updateGameState({ score: currentScore + 10 });
-        //     }
-        // });
+        // We just try to render demo.png
+        const sprite = this.add.sprite(0, 0, "demo");
+        sprite.setOrigin(0,0)
     }
 }
