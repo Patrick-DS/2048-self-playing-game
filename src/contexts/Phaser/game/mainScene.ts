@@ -19,6 +19,10 @@ export class MainScene extends Phaser.Scene {
   preload() {
     this.load.image("cell", "/cell.png")
     this.load.image("background", "/background.png")
+    const cellValues = [2,4,8,16,32,64,128,256,512,1024,2048] 
+    cellValues.forEach(cellValue => {
+        this.load.image(`${cellValue}-cell`, `/${cellValue}-cell.png`)
+    })
   }
 
   init(data: { updateGameState: (newState: Partial<GameState>) => void }): void {
@@ -35,12 +39,12 @@ export class MainScene extends Phaser.Scene {
     
     const coordinates: [number,number][] = [[0,0],[0,1],[0,2],[0,3],[1,0],[1,1],[1,2],[1,3],[2,0],[2,1],[2,2],[2,3],[3,0],[3,1],[3,2],[3,3]]
     coordinates.forEach(
-        ([x,y]) => {
+        ([x,y], index) => {
         this.add
             .sprite(
-                GAP_WIDTH + (CELL_WIDTH + GAP_WIDTH)*x,
                 GAP_WIDTH + (CELL_WIDTH + GAP_WIDTH)*y,
-                "cell",
+                GAP_WIDTH + (CELL_WIDTH + GAP_WIDTH)*x,
+                index < 11 ? `${2**(index % 11 +1)}-cell` : "cell",
             )
             .setOrigin(0,0)
             .setDepth(Channels.CELLS)
