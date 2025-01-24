@@ -1,3 +1,25 @@
+# 2048 AI solver game
+
+TO-DOs:
+- Render board from game state
+- Animate creation and deletion of cells
+- Animate movement
+- Animate movement of merging cells in various combinations. In all four directions: 
+  - 0,1 -> 0
+  - 0,2 -> 0
+  - 0,3 -> 0
+  - 1,2 -> 0
+  - 1,3 -> 0
+  - 2,3 -> 0
+  - 1,2 -> 1
+  - 1,3 -> 1
+  - 2,3 -> 1
+  - 2,3 -> 2
+- Compute state transitions
+- Combine state transitions with animations
+- Build the algorithm that computes the optimal state transitions
+- Deploy to Vercel
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
