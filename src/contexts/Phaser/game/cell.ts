@@ -1,28 +1,23 @@
 import { Scene } from "phaser"
-import { CellState } from "@/types/phaser"
+import { CellState } from "./state"
 import { Channel, GAP_WIDTH, CELL_WIDTH } from "./constants"
 
 export class Cell {
     gridPosition: [number, number]
-    cellState: CellState | null
+    cellState: CellState
     channel: Channel
 
     constructor(
         gridPosition: [number, number],
-        cellState: CellState | null,
-        channel: Channel
+        cellState: CellState,
     ) {
         this.gridPosition = gridPosition
         this.cellState = cellState
-        this.channel = channel
+        this.channel = Channel.GAME_CELL
     }
 
     get imageName() {
-        return (
-            this.cellState === null
-                ? "cell"
-                : `${this.cellState}-cell`
-        )
+        return `${this.cellState}-cell`
     }
 
     render(surface: Scene) {

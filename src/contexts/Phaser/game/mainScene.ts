@@ -1,18 +1,19 @@
-import { GameState } from "@/types"
-import { Channel, GRID_COORDINATES } from "./constants"
-import { Cell } from "./cell"
-import { CellState } from "@/types/phaser"
+import { Channel, GRID_COORDINATES, GAP_WIDTH, CELL_WIDTH } from "./constants"
+import { GameState, initGameState } from "./state"
+import generateCell from "./cellGenerator"
 
 
 export class MainScene extends Phaser.Scene {
-  private updateGameState?: (newState: Partial<GameState>) => void
+  gameState: GameState
 
   constructor() {
     super({ key: "MainScene" })
+    
+    this.gameState = initGameState()
   }
 
   init(data: { updateGameState: (newState: Partial<GameState>) => void }): void {
-    this.updateGameState = data.updateGameState
+
   }
 
   preload() {
@@ -32,31 +33,38 @@ export class MainScene extends Phaser.Scene {
     // Example of updating game state from within Phaser
     // We just try to render demo.png
     this.createBackgroundSprites()
+    this.startGame()
+  }
 
-    GRID_COORDINATES.filter((_, index) => index < 11).forEach(
-        ([x,y], index) => {
-            const gameCell = new Cell(
-              [x,y],
-              2**(index % 11 +1) as CellState,
-              Channel.GAME_CELL
-            )
-            gameCell.render(this)
-    })
+  startGame() {
+    ["", ""].forEach(() => { this.addCell() }) 
+  }
+
+  addCell() {
+    const newCell = generateCell(this.gameState)
+    console.log([newCell.gridPosition, newCell.cellState])
+    this.gameState.boardState.push([newCell.gridPosition, newCell.cellState])
+    newCell.render(this)
   }
 
   createBackgroundSprites() {
+    // Add grid background
     this.add
         .sprite(0, 0, "background")
         .setOrigin(0, 0)
         .setDepth(Channel.BACKGROUND)
 
+    // Add background cells
     GRID_COORDINATES.forEach(gridPosition => {
-        const cell = new Cell(
-          gridPosition,
-          null,
-          Channel.BACKGROUND_CELL,
-      )
-        cell.render(this)
+      const [x,y] = gridPosition
+      this.add
+        .sprite(
+            GAP_WIDTH + (CELL_WIDTH + GAP_WIDTH)*y,
+            GAP_WIDTH + (CELL_WIDTH + GAP_WIDTH)*x,
+            "cell",
+        )
+        .setOrigin(0,0)
+        .setDepth(Channel.BACKGROUND_CELL)
     })
   }
 }
