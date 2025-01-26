@@ -1,7 +1,7 @@
 import { ReactNode, FC, useRef, useState, useEffect } from "react"
 import GameContext from "./context"
 import { Game } from "phaser"
-import { GameState, initGameState } from "@/types"
+import { GameState, createEmptyBoardState } from "@/types"
 import { gameConfig } from "./game/config"
 
 interface GameProviderProps {
@@ -11,7 +11,7 @@ interface GameProviderProps {
 const GameProvider: FC<GameProviderProps> = ({ children }) => {
   const gameRef = useRef<HTMLDivElement>(null)
   const [game, setGame] = useState<Game | null>(null)
-  const [gameState, setGameState] = useState<GameState>(initGameState)
+  const [gameState, setGameState] = useState<GameState>(createEmptyBoardState)
 
   useEffect(() => {
     if (gameRef.current && !game && !gameRef.current.querySelector("canvas")) {
