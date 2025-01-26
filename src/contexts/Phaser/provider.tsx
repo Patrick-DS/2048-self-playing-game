@@ -33,7 +33,7 @@ const GameProvider: FC<GameProviderProps> = ({ children }) => {
     game,
     gameState,
     updateGameState: () => {
-      setGameState({ ...gameState, score: gameState.score + 1 })
+      setGameState({ ...gameState })
     },
   }
 
