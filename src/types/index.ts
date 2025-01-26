@@ -1,2 +1,2 @@
-export type { GameState } from "./phaser"
+export type { GameState, CellState } from "./phaser"
 export { initGameState } from "./phaser"

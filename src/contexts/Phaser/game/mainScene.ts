@@ -1,6 +1,7 @@
 import { GameState } from "@/types"
-import { Channel, GAP_WIDTH, CELL_WIDTH, GRID_COORDINATES } from "./constants"
+import { Channel, GRID_COORDINATES } from "./constants"
 import { Cell } from "./cell"
+import { CellState } from "@/types/phaser"
 
 
 export class MainScene extends Phaser.Scene {
@@ -34,7 +35,11 @@ export class MainScene extends Phaser.Scene {
 
     GRID_COORDINATES.filter((_, index) => index < 11).forEach(
         ([x,y], index) => {
-            const gameCell = new Cell([x,y], `${2**(index % 11 +1)}-cell`, Channel.GAME_CELL)
+            const gameCell = new Cell(
+              [x,y],
+              2**(index % 11 +1) as CellState,
+              Channel.GAME_CELL
+            )
             gameCell.render(this)
     })
   }
@@ -45,8 +50,12 @@ export class MainScene extends Phaser.Scene {
         .setOrigin(0, 0)
         .setDepth(Channel.BACKGROUND)
 
-    GRID_COORDINATES.forEach(([x,y]) => {
-        const cell = new Cell([x,y], "cell", Channel.BACKGROUND_CELL)
+    GRID_COORDINATES.forEach(gridPosition => {
+        const cell = new Cell(
+          gridPosition,
+          null,
+          Channel.BACKGROUND_CELL,
+      )
         cell.render(this)
     })
   }
