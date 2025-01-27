@@ -1,9 +1,9 @@
 # 2048 AI solver game
 
 TO-DOs:
-- Render board from game state
+X Render board from game state
+X Animate movement
 - Animate creation and deletion of cells
-- Animate movement
 - Animate movement of merging cells in various combinations. In all four directions: 
   - 0,1 -> 0
   - 0,2 -> 0
