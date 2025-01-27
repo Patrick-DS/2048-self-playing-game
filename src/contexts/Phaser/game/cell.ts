@@ -1,4 +1,4 @@
-import { Scene } from "phaser"
+import { Scene, GameObjects } from "phaser"
 import { v4 as uuid } from "uuid"
 import { CellState, GridPosition } from "./types"
 import { Channel, GAP_WIDTH, CELL_WIDTH } from "./constants"
@@ -8,6 +8,7 @@ export class Cell {
     gridPosition: GridPosition
     cellState: CellState
     channel: Channel
+    sprite?: GameObjects.Sprite
 
     constructor(
         gridPosition: GridPosition,
@@ -25,7 +26,7 @@ export class Cell {
 
     render(surface: Scene) {
         const [x,y] = this.gridPosition
-        surface.add
+        const renderedSprite = surface.add
             .sprite(
                 GAP_WIDTH + (CELL_WIDTH + GAP_WIDTH)*y,
                 GAP_WIDTH + (CELL_WIDTH + GAP_WIDTH)*x,
@@ -33,5 +34,7 @@ export class Cell {
             )
             .setOrigin(0,0)
             .setDepth(this.channel)
+
+        this.sprite = renderedSprite
     }
 }

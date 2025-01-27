@@ -71,6 +71,24 @@ export class MainScene extends Phaser.Scene {
     })
   }
 
+  moveCell(cell: Cell, movement: Movement): Promise<void> {
+    const [x,y] = movement.newGridPosition
+    const [screenX, screenY] = [GAP_WIDTH + (CELL_WIDTH + GAP_WIDTH)*y, GAP_WIDTH + (CELL_WIDTH + GAP_WIDTH)*x]
+
+    return new Promise((resolve) => {
+      this.tweens.add({
+        targets: cell!.sprite,
+        x: screenX,
+        y: screenY,
+        duration: 400,
+        ease: "Power2",
+        onComplete: () => {
+          resolve()
+        },
+      })
+    })
+  }
+
   initArrowKeyCursors() {
     // Initialize cursor keys
     this.cursors = this.input.keyboard!.createCursorKeys();
@@ -88,12 +106,8 @@ export class MainScene extends Phaser.Scene {
             )
 
             if (cellToMove !== undefined) {
-              cellToMove.gridPosition = cellMovement.newGridPosition
+              this.moveCell(cellToMove, cellMovement)
             }
-          })
-          this.createBackgroundSprites()
-          this.gameState.boardState.forEach((cell: Cell) => {
-            cell.render(this)
           })
 
           // Add cell after cell movements
