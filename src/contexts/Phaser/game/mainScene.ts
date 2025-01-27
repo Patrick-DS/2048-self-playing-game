@@ -78,6 +78,7 @@ export class MainScene extends Phaser.Scene {
     ["LEFT", "RIGHT", "UP", "DOWN"].forEach(direction => {
       this.input.keyboard!.on(`keydown-${direction}`, () => {
           console.log(`CLICKED ${direction}`);
+          this.addCell()
       })
     })
   }
