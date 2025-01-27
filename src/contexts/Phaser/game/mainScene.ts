@@ -1,10 +1,11 @@
+import { Types } from "phaser"
 import { Channel, GRID_COORDINATES, GAP_WIDTH, CELL_WIDTH } from "./constants"
 import { GameState, initGameState } from "./state"
 import generateCell from "./cellGenerator"
 
-
 export class MainScene extends Phaser.Scene {
   gameState: GameState
+  cursors: Types.Input.Keyboard.CursorKeys | undefined;
 
   constructor() {
     super({ key: "MainScene" })
@@ -34,6 +35,7 @@ export class MainScene extends Phaser.Scene {
     // We just try to render demo.png
     this.createBackgroundSprites()
     this.startGame()
+    this.initArrowKeyCursors()
   }
 
   startGame() {
@@ -65,6 +67,18 @@ export class MainScene extends Phaser.Scene {
         )
         .setOrigin(0,0)
         .setDepth(Channel.BACKGROUND_CELL)
+    })
+  }
+
+  initArrowKeyCursors() {
+    // Initialize cursor keys
+    this.cursors = this.input.keyboard!.createCursorKeys();
+
+    // Set up event listeners for each arrow key
+    ["LEFT", "RIGHT", "UP", "DOWN"].forEach(direction => {
+      this.input.keyboard!.on(`keydown-${direction}`, () => {
+          console.log(`CLICKED ${direction}`);
+      })
     })
   }
 }
