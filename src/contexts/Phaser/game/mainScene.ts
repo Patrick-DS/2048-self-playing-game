@@ -2,6 +2,8 @@ import { Types } from "phaser"
 import { Channel, GRID_COORDINATES, GAP_WIDTH, CELL_WIDTH } from "./constants"
 import { GameState, initGameState } from "./state"
 import generateCell from "./cellGenerator"
+import { getLeftMovements, Movement } from "./moveLeft"
+import { Cell } from "./cell"
 
 export class MainScene extends Phaser.Scene {
   gameState: GameState
@@ -44,8 +46,7 @@ export class MainScene extends Phaser.Scene {
 
   addCell() {
     const newCell = generateCell(this.gameState)
-    console.log([newCell.gridPosition, newCell.cellState])
-    this.gameState.boardState.push([newCell.gridPosition, newCell.cellState])
+    this.gameState.boardState.push(newCell)
     newCell.render(this)
   }
 
@@ -78,6 +79,24 @@ export class MainScene extends Phaser.Scene {
     ["LEFT", "RIGHT", "UP", "DOWN"].forEach(direction => {
       this.input.keyboard!.on(`keydown-${direction}`, () => {
           console.log(`CLICKED ${direction}`);
+          const movements = getLeftMovements(this.gameState.boardState)
+
+          // Temporary animation technique
+          movements.forEach((cellMovement: Movement) => {
+            const cellToMove = this.gameState.boardState.find(
+              (boardCell: Cell) => boardCell.id == cellMovement.cellId
+            )
+
+            if (cellToMove !== undefined) {
+              cellToMove.gridPosition = cellMovement.newGridPosition
+            }
+          })
+          this.createBackgroundSprites()
+          this.gameState.boardState.forEach((cell: Cell) => {
+            cell.render(this)
+          })
+
+          // Add cell after cell movements
           this.addCell()
       })
     })

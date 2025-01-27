@@ -1,16 +1,19 @@
 import { Scene } from "phaser"
-import { CellState } from "./state"
+import { v4 as uuid } from "uuid"
+import { CellState, GridPosition } from "./types"
 import { Channel, GAP_WIDTH, CELL_WIDTH } from "./constants"
 
 export class Cell {
-    gridPosition: [number, number]
+    id: string
+    gridPosition: GridPosition
     cellState: CellState
     channel: Channel
 
     constructor(
-        gridPosition: [number, number],
+        gridPosition: GridPosition,
         cellState: CellState,
     ) {
+        this.id = uuid()
         this.gridPosition = gridPosition
         this.cellState = cellState
         this.channel = Channel.GAME_CELL

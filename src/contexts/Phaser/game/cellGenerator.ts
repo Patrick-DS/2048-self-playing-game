@@ -1,12 +1,13 @@
 import { random } from "lodash"
-import { GameState, CellState } from "./state"
+import { GameState } from "./state"
+import { CellState } from "./types"
 import { GRID_COORDINATES } from "./constants"
 import { Cell } from "./cell"
 
 const hashGridPosition = (gridPosition: [number, number]): string => `${gridPosition[0]}.${gridPosition[1]}`
 
 const generateCellPosition = (gameState: GameState): [number, number] => {
-    const allocatedCoordinates = gameState.boardState.map(([gridPosition, cellState]) => gridPosition)
+    const allocatedCoordinates = gameState.boardState.map((cell: Cell) => cell.gridPosition)
     console.log("Allocated coordinates: ", allocatedCoordinates)
     const availableCoordinates = GRID_COORDINATES.filter(gridPosition => (
         !allocatedCoordinates
