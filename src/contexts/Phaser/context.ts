@@ -1,6 +1,6 @@
 import { createContext } from "react";
 import { Game } from "phaser"
-import { GameState } from "@/types"
+import { GameState } from "./game/state"
 
 interface GameContext {
     game: Game | null;

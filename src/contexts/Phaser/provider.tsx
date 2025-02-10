@@ -1,7 +1,7 @@
 import { ReactNode, FC, useRef, useState, useEffect } from "react"
 import GameContext from "./context"
 import { Game } from "phaser"
-import { GameState, initGameState } from "@/types"
+import { GameState, initGameState } from "./game/state"
 import { gameConfig } from "./game/config"
 
 interface GameProviderProps {
@@ -33,7 +33,7 @@ const GameProvider: FC<GameProviderProps> = ({ children }) => {
     game,
     gameState,
     updateGameState: () => {
-      setGameState({ ...gameState, score: gameState.score + 1 })
+      setGameState({ ...gameState })
     },
   }
 
