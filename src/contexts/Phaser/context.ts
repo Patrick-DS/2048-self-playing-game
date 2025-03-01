@@ -2,7 +2,7 @@ import { createContext } from "react";
 import { Game } from "phaser"
 import { GameState } from "./game/state"
 
-interface GameContext {
+export interface GameContext {
     game: Game | null;
     gameState: GameState | null;
     updateGameState: (newState: Partial<GameState>) => void;
